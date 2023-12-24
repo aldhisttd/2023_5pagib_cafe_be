@@ -1,32 +1,29 @@
-<?php 
-$conn = mysqli_connect('localhost', 'root', '', 'cafe');
+<?php
+include 'env.php';
 
-$res = [
-  "status" => "",
-  "msg" => "",
-  "body" => "",
+$response = [
+    'status' => '',
+    'msg' => '',
+    'body' => [
+        'data' => [
+            'kode' => ''
+        ]
+    ]
 ];
 
-$kode = $_GET['kode'];
+$kode = $_POST['kode'];
 
-$d = mysqli_query($conn, "SELECT gambar FROM menu WHERE kode='$kode'");
-$ary = mysqli_fetch_array($d);
-$gambar = $ary ['gambar'];
+if (!isset($koneksi)) {
 
-unlink("gambar/".$gambar);
-
-$q = mysqli_query($conn, "DELETE FROM menu WHERE kode='$kode'");
-
-if ($q){
-  $res['status'] = 200;
-  $res['msg'] = "Data berhasil dihapus";
-  $res['body'] = "";
+    $response['status'] = 400;
+    $response['msg'] = 'data gagal dihapus';
+    $response['body']['data']['kode'] = $kode;
 } else {
-  $res['status'] = 404;
-  $res['msg'] = "Data tidak ditemukan";
-  $res['body'] = "";
+
+    mysqli_query($koneksi, "DELETE FROM menu WHERE kode = '$kode'");
+    $response['status'] = 200;
+    $response['msg'] = 'data berhasil dihapus';
+    $response['body']['data']['kode'] = $kode;
 }
 
-echo json_encode($res);
-
-?>
+echo json_encode($response);
