@@ -1,47 +1,28 @@
 <?php
-$conn = mysqli_connect('localhost', 'root', '', 'cafe');
+include 'env.php';
 
-$res = [
-  "status" => "",
-  "msg" => "",
-  "body" => [
-    "data" => [
-      [
-        'kode' => "",
-        'nama' => "",
-      ]
+$response = [
+    'status' => '',
+    'msg' => '',
+    'body' => [
+        'data' => []
     ]
-  ]
 ];
 
 $kode = $_GET['kode'];
-$q = mysqli_query($conn, "SELECT kode,nama FROM kategori WHERE kode='$kode' ");
 
-// Inisialisasi array untuk menyimpan data
-$dataArray = array();
+if(!isset($koneksi)){
 
-// Mengambil semua baris yang sesuai dari hasil queri
-while ($row = mysqli_fetch_array($q)) {
-  // Menambahkan data dari setiap baris ke dalam array
-  $data = array(
+    $response['status'] = 400;
+    $response['msg'] = 'error';
+}else{
+  
+    $result = mysqli_query($koneksi, "SELECT * FROM kategori WHERE kode = '$kode'");
+        $row = mysqli_fetch_assoc($result);
+    }
 
-    'kode' => $row['kode'],
-    'nama' => $row['nama'],
+    $response['status'] = 200;
+    $response['msg'] = 'success';
+    $response['body']['data'] = $row;
 
-  );
-
-  // Menambahkan data ke dalam array utama
-  $dataArray[] = $data;
-}
-
-// Memeriksa apakah ada data yang ditemukan
-if (!empty($dataArray)) {
-  $res['status'] = 200;
-  $res['msg'] = "success";
-  $res['body']['data'] = $dataArray;
-} else {
-  $res['status'] = 400;
-  $res['msg'] = "error";
-}
-
-echo json_encode($res);
+echo json_encode($response);
