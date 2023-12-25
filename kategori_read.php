@@ -9,7 +9,6 @@ $res = [
     ],
 ];
 
-// Check if an ID is provided
 if (isset($_GET['id'])) {
     $kode = $_GET['id'];
 
@@ -28,10 +27,9 @@ if (isset($_GET['id'])) {
 
     $stmt->close();
 } else {
-    // Fetch all categories if no ID is provided
+    
     $q = mysqli_query($koneksi, "SELECT * FROM kategori");
 
-    // Inisialisasi array untuk menyimpan data
     $dataArray = array();
 
     while ($row = mysqli_fetch_array($q)) {
