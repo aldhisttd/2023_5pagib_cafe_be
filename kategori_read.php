@@ -1,7 +1,5 @@
 <?php
-// include "../env.php";
-
-$koneksi = mysqli_connect('localhost', 'root', '', 'mydb');
+include "env.php";
 
 $res = [
     "status" => 200,
@@ -24,7 +22,7 @@ if (isset($_GET['id'])) {
     if ($row) {
         $res['body']['data'] = $row;
     } else {
-        $res['status'] = 401;
+        $res['status'] = 400;
         $res['msg'] = "Data tidak ditemukan";
     }
 
@@ -47,7 +45,7 @@ if (isset($_GET['id'])) {
     if (!empty($dataArray)) {
         $res['body']['data'] = $dataArray;
     } else {
-        $res['status'] = 401;
+        $res['status'] = 400;
         $res['msg'] = "Data tidak ditemukan";
     }
 }
