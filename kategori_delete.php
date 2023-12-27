@@ -2,8 +2,8 @@
 include 'env.php';
 
 $response = [
-    'status' => '200',
-    'msg' => 'Data berhasil dihapus'
+    'status' => '',
+    'msg' => ''
 ];
 
 $koneksi = mysqli_connect('localhost', 'root', '', 'cafe');
