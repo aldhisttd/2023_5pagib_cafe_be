@@ -2,8 +2,8 @@
 include 'env.php';
 
 $response = [
-    'status' => '',
-    'msg' => '',
+    'status' => '200',
+    'msg' => 'Data berhasil diinsert',
     'body' => [
         'data' => [
             'kode' => '',
@@ -27,19 +27,16 @@ if (!$koneksi) {
     $kode_kategori = isset($_POST['kode_kategori']) ? mysqli_real_escape_string($koneksi, $_POST['kode_kategori']) : '';
     $harga = isset($_POST['harga']) ? mysqli_real_escape_string($koneksi, $_POST['harga']) : '';
 
-    // Memastikan data yang diinput tidak kosong
-    if (empty($kode) || empty($nama) || empty($kode_kategori) || empty($harga)) {
-        $response['status'] = 400;
-        $response['msg'] = 'Data tidak lengkap';
-    } else {
-        // Proses upload gambar
+    // Proses upload gambar
+    if (isset($_FILES['gambar'])) {
         $uploadDir = 'uploads/';
         $uploadFile = $uploadDir . basename($_FILES['gambar']['name']);
+        $gambarFileName = $_FILES['gambar']['name'];
 
         if (move_uploaded_file($_FILES['gambar']['tmp_name'], $uploadFile)) {
             // Jika upload gambar berhasil, lanjutkan proses penyimpanan data ke database
             $query = mysqli_query($koneksi, "INSERT INTO menu (kode, nama, kode_kategori, gambar, harga) 
-                                              VALUES ('$kode', '$nama', '$kode_kategori', '$uploadFile', '$harga')");
+                                              VALUES ('$kode', '$nama', '$kode_kategori', '$gambarFileName', '$harga')");
 
             if ($query) {
                 $response['status'] = 200;
@@ -47,15 +44,12 @@ if (!$koneksi) {
                 $response['body']['data']['kode'] = $kode;
                 $response['body']['data']['nama'] = $nama;
                 $response['body']['data']['kode_kategori'] = $kode_kategori;
-                $response['body']['data']['gambar'] = $uploadFile;
+                $response['body']['data']['gambar'] = $gambarFileName;
                 $response['body']['data']['harga'] = $harga;
             } else {
                 $response['status'] = 400;
-                $response['msg'] = 'Gagal membuat menu';
+                $response['msg'] = 'Gagal membuat menu: ' . mysqli_error($koneksi);
             }
-        } else {
-            $response['status'] = 400;
-            $response['msg'] = 'Gagal upload gambar';
         }
     }
 
