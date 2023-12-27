@@ -16,20 +16,8 @@ if ($koneksi) {
     // Lakukan query untuk mendapatkan data
     $q = mysqli_query($koneksi, "SELECT * FROM menu");
 
-    // Inisialisasi array untuk menyimpan data
-    $dataArray = array();
-
-    // Mengambil semua baris yang sesuai dari hasil query
-    while ($row = mysqli_fetch_assoc($q)) {
-        // Menambahkan data dari setiap baris ke dalam array
-        $dataArray[] = [
-            'kode' => $row['kode'],
-            'nama' => $row['nama'],
-            'kode_kategori' => $row['kode_kategori'],
-            'gambar' => $row['gambar'],
-            'harga' => $row['harga'],
-        ];
-    }
+    // Mengambil semua baris hasil query sebagai array
+    $dataArray = mysqli_fetch_all($q, MYSQLI_ASSOC);
 
     // Memeriksa apakah ada data yang ditemukan
     if (!empty($dataArray)) {
