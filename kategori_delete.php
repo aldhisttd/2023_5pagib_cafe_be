@@ -3,32 +3,31 @@ include 'env.php';
 
 $response = [
     'status' => '',
-    'msg' => ''
+    'msg' => '',
+    'body' => [
+        'data' => []
+    ]
 ];
 
-$koneksi = mysqli_connect('localhost', 'root', '', 'cafe');
-
-if ($koneksi) {
-    $kode = isset($_POST['kode']) ? mysqli_real_escape_string($koneksi, $_POST['kode']) : '';
+if (isset($_POST['kode'])) {
+    $kode = $_POST['kode'];
 
     if (!empty($kode)) {
+        $selectQuery = mysqli_query($koneksi, "SELECT * FROM menu WHERE kode='$kode'");
+        $deletedData = mysqli_fetch_assoc($selectQuery);
         $query = mysqli_query($koneksi, "DELETE FROM kategori WHERE kode='$kode'");
 
         if ($query) {
             $response['status'] = 200;
             $response['msg'] = 'Data berhasil dihapus';
+            $response['body']['data']['kode'] = $kode;  
         } else {
             $response['status'] = 400;
-            $response['msg'] = 'Gagal menghapus data';
+            $response['msg'] = 'Data gagal dihapus';
+            $response['body']['data']['kode'] = $kode;  
         }
     }
-
-    mysqli_close($koneksi);
-} else {
-    $response['status'] = 500;
-    $response['msg'] = 'Gagal terhubung ke database';
 }
 
-header('Content-Type: application/json');
 echo json_encode($response);
 ?>
