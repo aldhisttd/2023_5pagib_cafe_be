@@ -8,10 +8,8 @@ $response = [
         'data' => []
     ]
 ];
-
 if (isset($_POST['kode'])) {
     $kode = $_POST['kode'];
-
     if (!empty($kode)) {
         $selectQuery = mysqli_query($koneksi, "SELECT * FROM menu WHERE kode='$kode'");
         $deletedData = mysqli_fetch_assoc($selectQuery);
