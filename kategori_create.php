@@ -2,8 +2,8 @@
 include 'env.php';
 
 $response = [
-    'status' => '',
-    'msg' => '',
+    'status' => 200,
+    'msg' => 'Data berhasil diinsert',
     'body' => [
         'data' => [
             'kode' => '',
@@ -12,31 +12,29 @@ $response = [
     ]
 ];
 
-// Cek koneksi ke database
-$koneksi = mysqli_connect('localhost', 'root', '', 'cafe');
-if (!$koneksi) {
-    $response['status'] = 500;
-    $response['msg'] = 'Gagal terhubung ke database';
+$response = [
+    'status' => 400,
+    'msg' => 'Gagal membuat Kategori',
+    'body' => [
+        'data' => [
+            'kode' => '',
+            'nama' => '',
+        ]
+    ]
+];
+$kode = $_POST['kode'];
+$nama = $_POST['nama'];
+
+$query = mysqli_query($koneksi, "INSERT INTO kategori (kode, nama) VALUES ('$kode', '$nama')");
+
+if ($query) {
+    $response['status'] = 200;
+    $response['msg'] = 'Data berhasil diinsert';
+    $response['body']['data']['kode'] = $kode;
+    $response['body']['data']['nama'] = $nama;
 } else {
-    // Perbaikan pada bagian ini
-    $kode = mysqli_real_escape_string($koneksi, $_POST['kode'] ?? '');
-    $nama = mysqli_real_escape_string($koneksi, $_POST['nama'] ?? '');
-
-    // Menambahkan data kategori baru ke dalam database
-    $query = mysqli_query($koneksi, "INSERT INTO kategori (kode, nama) VALUES ('$kode', '$nama')");
-
-    if ($query) {
-        $response['status'] = 200;
-        $response['msg'] = 'Data berhasil diinsert';
-        $response['body']['data']['kode'] = $kode;
-        $response['body']['data']['nama'] = $nama;
-    } else {
-        $response['status'] = 400;
-        $response['msg'] = 'Gagal membuat kategori';
-    }
-
-    // Tutup koneksi database
-    mysqli_close($koneksi);
+    $response['status'] = 400;
+    $response['msg'] = 'Gagal membuat kategori';
 }
 
 echo json_encode($response);
