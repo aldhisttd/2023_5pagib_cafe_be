@@ -2,24 +2,10 @@
 include 'env.php';
 
 $response = [
-    'status' => 200,
-    'msg' => 'Data berhasil diinsert',
+    'status' => '',
+    'msg' => '',
     'body' => [
-        'data' => [
-            'kode' => '',
-            'nama' => '',
-        ]
-    ]
-];
-
-$response = [
-    'status' => 400,
-    'msg' => 'Gagal membuat Kategori',
-    'body' => [
-        'data' => [
-            'kode' => '',
-            'nama' => '',
-        ]
+        'data' => []
     ]
 ];
 $kode = $_POST['kode'];
@@ -35,6 +21,7 @@ if ($query) {
 } else {
     $response['status'] = 400;
     $response['msg'] = 'Gagal membuat kategori';
+    
 }
 
 echo json_encode($response);
