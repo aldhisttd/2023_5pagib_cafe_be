@@ -1,6 +1,5 @@
 <?php
 include 'env.php';
-
 $response = [
     'status' => '',
     'msg' => '',
@@ -20,8 +19,7 @@ if ($query) {
     $response['body']['data']['nama'] = $nama;
 } else {
     $response['status'] = 400;
-    $response['msg'] = 'Gagal membuat kategori';
-    
+    $response['msg'] = 'Gagal membuat kategori';    
 }
 
 echo json_encode($response);
