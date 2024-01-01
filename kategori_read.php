@@ -2,10 +2,15 @@
 include "env.php";
 
 $res = [
-    "status" => 200,
-    "msg" => "success",
+    "status" => "",
+    "msg" => "",
     "body" => [
-        "data" => [],
+        "data" => [
+            [
+                "kode" => "",
+                "nama" => ""
+            ]
+        ],
     ],
 ];
 
