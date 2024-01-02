@@ -44,7 +44,6 @@ if (isset($_GET['id'])) {
         );
         $dataArray[] = $data;
     }
-
     if (!empty($dataArray)) {
         $res['status'] = 200;
         $res['msg']="success";
