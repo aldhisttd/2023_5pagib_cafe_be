@@ -1,6 +1,7 @@
 <?php
 include "env.php";
 
+
 $res = [
     "status" => "",
     "msg" => "",
@@ -13,6 +14,7 @@ $res = [
         ],
     ],
 ];
+
 
 if (isset($_GET['id'])) {
     $kode = $_GET['id'];
