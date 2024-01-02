@@ -46,6 +46,8 @@ if (isset($_GET['id'])) {
     }
 
     if (!empty($dataArray)) {
+        $res['status'] = 200;
+        $res['msg']="success";
         $res['body']['data'] = $dataArray;
     } else {
         $res['status'] = 400;
