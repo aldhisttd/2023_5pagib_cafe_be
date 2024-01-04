@@ -9,10 +9,8 @@ $response = [
     ]
 ];
 
-if (isset($_GET['kode'])) {
-    $kode = $_GET['kode'];
-
-    $query = mysqli_query($koneksi, "SELECT * FROM kategori WHERE kode = '$kode'");
+$kode = $_GET['kode'];
+$query = mysqli_query($koneksi, "SELECT * FROM kategori WHERE kode = '$kode'");
 
     if ($query) {
         $kategoriData = mysqli_fetch_assoc($query);
@@ -26,7 +24,6 @@ if (isset($_GET['kode'])) {
             $response['msg'] = 'error';
         }
     }
-}
 
 echo json_encode($response);
 ?>
