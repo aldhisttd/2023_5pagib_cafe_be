@@ -29,7 +29,7 @@ if (isset($_GET['id'])) {
         $res['body']['data'] = $row;
     } else {
         $res['status'] = 400;
-        $res['msg'] = "Data tidak ditemukan";
+        $res['msg'] = "error";
     }
 
     $stmt->close();
@@ -52,7 +52,7 @@ if (isset($_GET['id'])) {
         $res['body']['data'] = $dataArray;
     } else {
         $res['status'] = 400;
-        $res['msg'] = "Data tidak ditemukan";
+        $res['msg'] = "error";
     }
 }
 
