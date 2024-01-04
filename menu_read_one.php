@@ -30,7 +30,7 @@ if ($query) {
                     'harga' => $menuData['harga']  
                 ]
             ]
-        ];  // Added a missing semicolon
+        ]; 
     } else {
         $response['status'] = 400;
         $response['msg'] = 'Error';
