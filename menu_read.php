@@ -9,7 +9,8 @@ $response = [
     ]
 ];
 
-$q = mysqli_query($koneksi, "SELECT * FROM menu");
+$q = mysqli_query($koneksi, "SELECT * FROM menu 
+                INNER JOIN kategori ON  menu.kode_kategori = kategori.kode");
 
 $dataArray = mysqli_fetch_all($q, MYSQLI_ASSOC);
 
