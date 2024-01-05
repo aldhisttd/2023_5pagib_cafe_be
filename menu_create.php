@@ -16,11 +16,13 @@ $harga = $_POST['harga'];
 
 // Proses upload gambar
 if (isset($_FILES['gambar'])) {
-    $uploadDir = 'upload/';
-    $uploadFile = $uploadDir . basename($_FILES['gambar']['name']);
+    
     $gambar = $_FILES['gambar']['name'];
-
-    if (move_uploaded_file($_FILES['gambar']['tmp_name'], $uploadFile)) {
+    $temp = explode(".", $_FILES["gambar"]["name"]);
+    $gambar = md5(date('dmy h:i:s')) . '.' . end($temp);
+    $target_file = "upload/" . $gambar;
+    
+    if (move_uploaded_file($_FILES['gambar']['tmp_name'], $target_file)) {
         // Jika upload gambar berhasil, lanjutkan proses penyimpanan data ke database
         $query = mysqli_query($koneksi, "INSERT INTO menu (kode, nama, kode_kategori, gambar, harga) 
                                           VALUES ('$kode', '$nama', '$kode_kategori', '$gambar', '$harga')");
