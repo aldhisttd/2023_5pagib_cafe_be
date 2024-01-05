@@ -11,30 +11,27 @@ $response = [
 
 $kode = $_REQUEST['kode'];
 
-$query = mysqli_query($koneksi, "SELECT * FROM menu WHERE kode='$kode'");
+$query = mysqli_prepare($koneksi, "SELECT * FROM menu 
+                                   INNER JOIN kategori ON menu.kode_kategori = kategori.kode
+                                   WHERE menu.kode_kategori = ?");
 
-if ($query) {
-    $menuData = mysqli_fetch_assoc($query);
+mysqli_stmt_bind_param($query, "s", $kode);
+mysqli_stmt_execute($query);
 
-    if ($menuData) {
-        $response = [
-            'status' => 200,
-            'msg' => 'success',
-            'body' => [
-                'data' => [
-                    'kode' => $menuData['kode'],  
-                    'nama' => $menuData['nama'],  
-                    'kode_kategori' => $menuData['kode_kategori'],
-                    'nama_kategori' => $menuData['nama_kategori'],  
-                    'gambar' => $menuData['gambar'],  
-                    'harga' => $menuData['harga']  
-                ]
-            ]
-        ]; 
-    } else {
-        $response['status'] = 400;
-        $response['msg'] = 'Error';
-    }
+$result = mysqli_stmt_get_result($query);
+$menuData = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+if ($menuData) {
+    $response = [
+        'status' => 200,
+        'msg' => 'success',
+        'body' => [
+            'data' => $menuData
+        ]
+    ];
+} else {
+    $response['status'] = 400;
+    $response['msg'] = 'Error';
 }
 
 echo json_encode($response);
