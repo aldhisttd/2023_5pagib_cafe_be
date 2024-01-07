@@ -5,25 +5,34 @@ $response = [
     'status' => '',
     'msg' => '',
     'body' => [
-        'data' => [
-            'kode' => ''
-        ]
+        'data' => []
     ]
 ];
 
-$kode = $_POST['kode'];
+$kode = $_REQUEST['kode'];
 
-if (!isset($koneksi)) {
+$gambar = mysqli_query($koneksi, "SELECT gambar FROM menu WHERE kode='$kode'");
 
-    $response['status'] = 400;
-    $response['msg'] = 'data gagal dihapus';
-    $response['body']['data']['kode'] = $kode;
-} else {
+if ($row = mysqli_fetch_assoc($gambar)) {
+    $gambar = $row['gambar'];
 
-    mysqli_query($koneksi, "DELETE FROM menu WHERE kode = '$kode'");
-    $response['status'] = 200;
-    $response['msg'] = 'data berhasil dihapus';
-    $response['body']['data']['kode'] = $kode;
+    // Menghapus file gambar dari sistem file
+    $gambar = 'upload/' . $gambar;
+    unlink($gambar);
+
+    // Menghapus data dari database
+    $query = mysqli_query($koneksi, "DELETE FROM menu WHERE kode='$kode'");
+
+    if ($query) {
+        $response['status'] = 200;
+        $response['msg'] = 'Data berhasil dihapus';
+        $response['body']['data']['kode'] = $kode;
+    } else {
+        $response['status'] = 400;
+        $response['msg'] = 'Data gagal dihapus';
+        $response['body']['data']['kode'] = $kode;
+    }
 }
 
 echo json_encode($response);
+?>
