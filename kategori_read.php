@@ -1,60 +1,26 @@
 <?php
-include "env.php";
+include 'env.php';
 
-
-$res = [
-    "status" => "",
-    "msg" => "",
-    "body" => [
-        "data" => [
-            [
-                "kode" => "",
-                "nama" => ""
-            ]
-        ],
-    ],
+$response = [
+    'status' => '',
+    'msg' => '',
+    'body' => [
+        'data' => []
+    ]
 ];
 
+if (!isset($koneksi)) {
 
-if (isset($_GET['id'])) {
-    $kode = $_GET['id'];
-
-    $stmt = $koneksi->prepare("SELECT * FROM kategori WHERE kode = ?");
-    $stmt->bind_param("i", $kode);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-
-    if ($row) {
-        $res['body']['data'] = $row;
-    } else {
-        $res['status'] = 400;
-        $res['msg'] = "error";
-    }
-
-    $stmt->close();
+    $response['status'] = 400;
+    $response['msg'] = 'error';
 } else {
-    
-    $q = mysqli_query($koneksi, "SELECT * FROM kategori");
 
-    $dataArray = array();
-
-    while ($row = mysqli_fetch_array($q)) {
-        $data = array(
-            'kode' => $row['kode'],
-            'nama' => $row['nama'],
-        );
-        $dataArray[] = $data;
-    }
-    if (!empty($dataArray)) {
-        $res['status'] = 200;
-        $res['msg']="success";
-        $res['body']['data'] = $dataArray;
-    } else {
-        $res['status'] = 400;
-        $res['msg'] = "error";
-    }
+    $result = mysqli_query($koneksi, "SELECT * FROM kategori");
+    $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $response['status'] = 200;
+    $response['msg'] = 'success';
+    $response['body']['data'] = $row;
 }
 
-echo json_encode($res);
+echo json_encode($response);
 ?>
