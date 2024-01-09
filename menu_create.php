@@ -33,11 +33,11 @@ if (isset($_FILES['gambar'])) {
             $response['body']['data']['kode'] = $kode;
             $response['body']['data']['nama'] = $nama;
             $response['body']['data']['kode_kategori'] = $kode_kategori;
-            $response['body']['data']['gambar'] = $gambar;
+            $response['body']['data']['gambar'] = 'upload/'.$gambar;
             $response['body']['data']['harga'] = $harga;
         } else {
             $response['status'] = 400;
-            $response['msg'] = 'Gagal membuat menu: ' . mysqli_error($koneksi);
+            $response['msg'] = 'Proses insert gagal: ' . mysqli_error($koneksi);
         }
     }
 }
