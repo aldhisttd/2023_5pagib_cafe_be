@@ -11,7 +11,12 @@ $response = [
 
 $kode = $_GET['kode_kategori'];
 
-$result = mysqli_query($koneksi, "SELECT * FROM menu WHERE kode_kategori = '$kode'");
+$query = "SELECT *, kategori.nama as nama_kategori
+            FROM menu 
+            INNER JOIN kategori ON menu.kode_kategori = kategori.kode
+            WHERE menu.kode_kategori = '$kode'";
+
+$result = mysqli_query($koneksi, $query);
 $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 if ($data) {
