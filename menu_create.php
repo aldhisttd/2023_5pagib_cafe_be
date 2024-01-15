@@ -25,7 +25,7 @@ if (isset($_FILES['gambar'])) {
     if (move_uploaded_file($_FILES['gambar']['tmp_name'], $target_file)) {
         // Jika upload gambar berhasil, lanjutkan proses penyimpanan data ke database
         $query = mysqli_query($koneksi, "INSERT INTO menu (kode, nama, kode_kategori, gambar, harga) 
-                                          VALUES ('$kode', '$nama', '$kode_kategori', '$gambar', '$harga')");
+                                          VALUES ('$kode', '$nama', '$kode_kategori', 'upload/$gambar', '$harga')");
 
         if ($query) {
             $response['status'] = 200;
