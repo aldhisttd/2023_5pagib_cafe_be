@@ -11,7 +11,7 @@ $response = [
 
 $kode = $_GET['kode_kategori'];
 
-$query = "SELECT *, kategori.nama as nama_kategori
+$query = "SELECT menu.kode, menu.nama, menu.kode_kategori, kategori.nama as nama_kategori, menu.gambar, menu.harga
             FROM menu 
             INNER JOIN kategori ON menu.kode_kategori = kategori.kode
             WHERE menu.kode_kategori = '$kode'";
